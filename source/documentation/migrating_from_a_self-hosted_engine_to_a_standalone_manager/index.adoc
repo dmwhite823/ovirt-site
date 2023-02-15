@@ -1,0 +1,79 @@
+:ovirt-doc:
+include::common/collateral_files/_attributes.adoc[]
+= Migrating from a self-hosted engine to a standalone {engine-name}
+// attributes for legal notice
+:doc-path: migrating_from_a_self_hosted_engine_to_a_standalone_manager
+:doc-name: Migrating from a self-hosted engine to a standalone Manager
+
+// Make sure Jekyll displays a guide title
+[discrete]
+== Migrating from a self-hosted engine to a standalone {engine-name}
+
+:context: migrating_to_SAM
+:migrating_to_SAM:
+
+You can convert a self-hosted engine to a standalone {virt-product-fullname} {engine-name} by backing up the self-hosted engine and restoring it in a new {virt-product-fullname} {engine-name} environment.
+
+The difference between the two environment types is explained below:
+
+[discrete]
+include::common/arch/con-Standalone_Manager_Architecture.adoc[leveloffset=+2]
+
+[discrete]
+include::common/arch/con-Self-hosted_Engine_Architecture.adoc[leveloffset=+2]
+
+[id='Migration_overview']
+== Migration Overview
+
+When you migrate from a self-hosted engine to a standalone manager, you first install the host operating system, install the required packages, and then restore the {engine-name} backup.
+
+The migration involves the following key steps:
+
+. xref:Installing_the_self-hosted_engine_deployment_host_migrating_to_SAM[Install a new host to deploy the standalone engine on.]
+
+. xref:Updating_the_Red_Hat_Virtualization_Manager_migrating_to_SAM[Update the original {engine-name} to the latest minor version before you back it up.]
+
+. xref:Backing_up_the_Original_Manager_migrating_to_SAM[Back up the original {engine-name} using the `engine-backup` tool.]
+
+. xref:Restoring_the_Backup_on_a_New_Self-hosted_Engine_migrating_to_SAM[Deploy a new self-hosted engine and restore the backup.]
+
+. xref:Enabling_the_Red_Hat_Virtualization_Manager_Repositories_migrating_to_SAM[Enable the {engine-name} repositories on the new {engine-name} host.]
+
+This procedure assumes that you have access and can make changes to the original {engine-name}.
+
+.Prerequisites
+
+* FQDNs prepared for your {engine-name}. Forward and reverse lookup records must both be set in the DNS. The new {engine-name} must have the same FQDN as the original {engine-name}.
+
+// Adding context back after this assembly, which includes its own context. There's probably a better way that assemblies within assemblies is meant to be done.
+:context: migrating_to_SAM
+
+Before backing up the {engine-name}, ensure it is updated to the latest minor version. The {engine-name} version in the backup file must match the version of the new {engine-name}.
+
+include::common/upgrade/proc-Updating_the_Red_Hat_Virtualization_Manager.adoc[leveloffset=+1]
+
+include::common/backup-restore/proc-Backing_up_the_Original_Manager.adoc[leveloffset=+1]
+
+After backing up the {engine-name}, deploy the new standalone server, enable the {engine-name} repositories on the new {engine-name} host, install the required software, and restore the backup on the new host.
+
+include::common/backup-restore/proc-Restoring_the_Backup_on_a_New_Self-hosted_Engine.adoc[leveloffset=+1]
+
+include::common/install/proc-Enabling_the_Red_Hat_Virtualization_Manager_Repositories.adoc[leveloffset=+1]
+
+The {virt-product-fullname} {engine-name} has been migrated to a standalone setup. The {engine-name} is now operating in the standalone environment.
+
+If the new environment is running without issue, you can decommission the original self-hosted {engine-name} virtual machine.
+
+:migrating_to_SAM!:
+
+ifdef::context[:parent-context: {context}]
+:context: Install_nodes_RHVH
+
+[appendix]
+include::common/install/proc-Preventing_Kernel_Modules_from_Loading_Automatically.adoc[leveloffset=+1]
+
+ifdef::parent-context[:context: {parent-context}]
+ifndef::parent-context[:!context:]
+
+[appendix]
+include::common/collateral_files/ovirt-legal-notice.adoc[leveloffset=+1]
